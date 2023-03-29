@@ -8,6 +8,7 @@ public class FakEndrekursion {
     }
 
     //Wrapper Methode
+    // wird verwendet, damit beispielsweise Personen, die nicht am Code mitprogrammiert haben, nicht verstehen müssen, was man bei m eingeben muss
     public static int EndRecursion(int n) {
 
             return End(1, n);
@@ -15,8 +16,8 @@ public class FakEndrekursion {
     }
 
     public static int End(int m, int n) {
-        // wozu? Im schneller voran zu kommen
-        // Ist ein Zwischenschritt zur Interation
+        // wozu? Um schneller voran zu kommen
+        // Ist ein Zwischenschritt zur Iteration
         //vieles wird in der Variable m gespeichert
         if (n == 0) {
 

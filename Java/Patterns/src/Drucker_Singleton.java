@@ -1,8 +1,8 @@
-public class Drucker {
+public class Drucker_Singleton {
 
         public static void main(String[] args) {
-            Drucker d1 = Drucker.getInstance();
-            Drucker d2 = Drucker.getInstance();
+            Drucker_Singleton d1 = Drucker_Singleton.getInstance();
+            Drucker_Singleton d2 = Drucker_Singleton.getInstance();
 
             if (d1 == d2) {
                 System.out.println("es gibt nur eine Instanz");
@@ -12,16 +12,16 @@ public class Drucker {
 
         }
 
-    private static Drucker instance = null;
+    private static Drucker_Singleton instance = null;
     private String drucker;
 
-    private Drucker() {
+    private Drucker_Singleton() {
         System.out.println("ich drucke, bin die Instanz XYZ");
     }
 
-    public static synchronized Drucker getInstance() {
+    public static synchronized Drucker_Singleton getInstance() {
         if (instance == null) {
-            instance = new Drucker();
+            instance = new Drucker_Singleton();
         }
         return instance;
     }

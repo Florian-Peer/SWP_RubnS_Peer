@@ -20,6 +20,23 @@ def bewerte_hand(hand):
     kartenart = [karte % 13 for karte in hand]
     kartenart.sort()
 
+    """
+    Karte   Arrayzahl
+    Ass     0
+    2       1
+    3       2
+    4       3
+    5       4
+    6       5
+    7       6
+    8       7
+    9       8
+    10      9
+    Bube    10
+    Dame    11
+    König   12
+"""
+
     if alle_gleiche_farbe(farben) and kartenart == [0, 9, 10, 11, 12]:
         return "Royal Flush"
     if alle_gleiche_farbe(farben) and all(kartenart[i] == kartenart[i + 1] - 1 for i in range(4)):
@@ -56,7 +73,7 @@ handbewertung_zähler = {
     "Royal Flush": 0
 }
 
-for _ in range(anzahl_runden):
+for i in range(anzahl_runden):
     spielerhand = erstelle_hand()
     handbewertung = bewerte_hand(spielerhand)
     handbewertung_zähler[handbewertung] += 1

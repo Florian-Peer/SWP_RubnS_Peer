@@ -59,26 +59,35 @@ def bewerte_hand(hand):
     return "Hochkarte"
 
 
-anzahl_runden = 500000
-handbewertung_zähler = {
-    "Hochkarte": 0,
-    "Ein Paar": 0,
-    "Zwei Paare": 0,
-    "Drilling": 0,
-    "Straight": 0,
-    "Flush": 0,
-    "Full House": 0,
-    "Vierling": 0,
-    "Straight Flush": 0,
-    "Royal Flush": 0
-}
 
-for i in range(anzahl_runden):
-    spielerhand = erstelle_hand()
-    handbewertung = bewerte_hand(spielerhand)
-    handbewertung_zähler[handbewertung] += 1
 
-gesamt_hände = anzahl_runden
-for bewertung, anzahl in handbewertung_zähler.items():
-    prozent = (anzahl / gesamt_hände) * 100
-    print(f"{bewertung}: {prozent:.5f}%")
+
+def main():
+
+    anzahl_runden = 500000
+    handbewertung_zähler = {
+        "Hochkarte": 0,
+        "Ein Paar": 0,
+        "Zwei Paare": 0,
+        "Drilling": 0,
+        "Straight": 0,
+        "Flush": 0,
+        "Full House": 0,
+        "Vierling": 0,
+        "Straight Flush": 0,
+        "Royal Flush": 0
+    }
+
+    for i in range(anzahl_runden):
+        spielerhand = erstelle_hand()
+        handbewertung = bewerte_hand(spielerhand)
+        handbewertung_zähler[handbewertung] += 1
+
+    gesamt_hände = anzahl_runden
+    for bewertung, anzahl in handbewertung_zähler.items():
+        prozent = (anzahl / gesamt_hände) * 100
+        print(f"{bewertung}: {prozent:.5f}%")
+
+
+if __name__ == "__main__":
+    main()

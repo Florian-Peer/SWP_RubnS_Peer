@@ -6,26 +6,10 @@ import random
 """
 1) Als Terminal-Spiel umsetzen
 2) Spielmodi COMP vs PLAYER
-3) zähle wer wie oft gewonnen
-4) zähle alle gewählte Symbole
+3) zähle, wer wie oft gewonnen hat
+4) zähle alle gewählten Symbole
 5) überlege wie die Daten dauerhaft gespeichert werden könnten
 6) biete ein Menü an Spielen, Statistik
-
-class weapon(Enum):
-    schere = 1
-    stein = 2
-    papier = 3
-    echse = 4
-    spock = 5
-
-
-werGewinntWo = [
-    {weapon.schere: [weapon.papier, weapon.echse]},
-    {weapon.stein: [weapon.echse, weapon.schere]},
-    {weapon.papier: [weapon.stein, weapon.spock]},
-    {weapon.echse: [weapon.spock, weapon.papier]},
-    {weapon.spock: [weapon.stein, weapon.schere]}
-]
 """
 
 
@@ -85,7 +69,6 @@ def main():
         if winner == "noone":
             print("unentschieden!")
         elif winner == "computer":
-            # f strings: https://www.geeksforgeeks.org/formatted-string-literals-f-strings-python/
             print("der Computer hat", computer_choice.name, "gewählt und gewinnt somit diese Runde!")
             computer_wins += 1
         elif winner == "player":
@@ -96,10 +79,10 @@ def main():
             print("etwas ist mächtig schief gelaufen!!!!")
 
         print()
-        print("Wins: ")
-        print("Player: ", player_wins, "Computer: ", computer_wins)
-        play_again = ""
-        play_again = input("nochmal spielen ? (j / n) ")
+        print("Spiele gewonnen: ")
+        print("Spieler: ", player_wins, "Computer: ", computer_wins)
+
+        play_again = input("nochmal spielen ? (j / n) (beim Aussteigen wird eine Simple Statistik angezeigt): ")
         if not play_again or play_again.lower()[0] == "n":
             # https://www.digitalocean.com/community/tutorials/how-to-use-break-continue-and-pass-statements-when-working-with-loops-in-python-3
             break
@@ -111,6 +94,34 @@ def main():
     print("Der Computer hat in dieser Reihenfolge gewählt:")
     for choice in computer_choices:
         print("-", choice)
+
+    print()
+    print("aus der Textdatei geladene Statistik:")
+
+    loaded_wins_player = []
+    loaded_wins_computer = []
+    with open('game_data.txt', 'r') as file:
+        # die erste Zeile ist nur zur Information → skippen
+        next(file)
+        for line in file:
+            parts = line.strip().split(';')
+            if len(parts) == 2:
+                loaded_wins_player.append(parts[0])
+                loaded_wins_computer.append(parts[1])
+
+    sum_wins_player = 0
+    sum_wins_computer = 0
+
+    for x in loaded_wins_player:
+        sum_wins_player += int(x)
+
+    for x in loaded_wins_computer:
+        sum_wins_computer += int(x)
+
+    print("gesamt gewonnene Spiele vom Computer: ")
+    print(sum_wins_computer)
+    print("gesamt gewonnene Spiele vom Spieler: ")
+    print(sum_wins_player)
     save_to_file(player_wins, computer_wins)
 
 

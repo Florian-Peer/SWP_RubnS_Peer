@@ -1,10 +1,8 @@
-player_wins;computer_wins
-5;6
-2;3
-3;3
-0;1
-0;0
-1;0
-1;0
-0;0
-2;2
+- anzahl Player Wins; Anzahl Computer Wins
+- Was der Spieler diese Runde gewählt hat
+- Was der Computer diese Runde gewählt hat
+
+1;1!schere;stein;papier;stein;echse|echse;papier;papier;stein;echse
+1;0!schere;stein;papier;stein;echse|echse;stein;papier;stein;echse
+2;4!stein;stein;papier;stein;papier;stein;stein|papier;schere;papier;spock;schere;echse;papier
+2;0!schere;stein|papier;schere

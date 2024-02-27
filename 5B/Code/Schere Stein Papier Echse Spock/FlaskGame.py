@@ -2,6 +2,9 @@
 # http://www.samkass.com/theories/RPSSL.html
 from enum import Enum
 import random
+import requests
+from flask import Flask, request
+import sqlite3
 
 """
 1) Als Terminal-Spiel umsetzen
@@ -44,9 +47,21 @@ def get_winner(player_choice, computer_choice):
     return "computer"
 
 
-def save_to_file(data1, data2):
+def save_to_file(data1, data2, playerChoices, computerChoices):
     file = open("game_data.txt", "a")
-    file.write("\n" + str(data1) + ";" + str(data2))
+    playerChoicesString = ""
+    computerChoicesString = ""
+    for c in playerChoices:
+        if(playerChoicesString == ""):
+            playerChoicesString = playerChoicesString + c
+        else:
+            playerChoicesString = playerChoicesString + ";" + c
+    for c in computerChoices:
+        if(computerChoicesString == ""):
+            computerChoicesString = computerChoicesString + c
+        else:
+            computerChoicesString = computerChoicesString + ";" + c
+    file.write("\n" + str(data1) + ";" + str(data2) + "!" + str(playerChoicesString) + "|" + str(computerChoicesString))
     file.close()
 
 
@@ -55,6 +70,11 @@ def main():
     computer_wins = 0
     player_choices = []
     computer_choices = []
+    print("-----------------------------------------------------------------------------")
+    print("⛄HERRZLICH WILLKOMMEN BEIM WAHNSINNS-SPIEL SCHERE STEIN PAPIER ECHSE SPOCK!!!!⛄")
+    print("✁☝⛺⛽")
+    print("-----------------------------------------------------------------------------")
+    print()
     while True:
         player_choice = input("Was wählst du? (schere, stein, papier, echse, spock): ").lower()
         # .name: https://realpython.com/python-enum/#using-the-name-and-value-attributes
@@ -100,14 +120,18 @@ def main():
 
     loaded_wins_player = []
     loaded_wins_computer = []
+    save_to_file(player_wins, computer_wins, player_choices, computer_choices)
     with open('game_data.txt', 'r') as file:
-        # die erste Zeile ist nur zur Information → skippen
+        # die ersten paar Zeilen sind nur zur Information → skippen
+        next(file)
+        next(file)
+        next(file)
         next(file)
         for line in file:
-            parts = line.strip().split(';')
-            if len(parts) == 2:
-                loaded_wins_player.append(parts[0])
-                loaded_wins_computer.append(parts[1])
+            wins = line.strip().split('!')
+            parts = wins[0].strip().split(';')
+            loaded_wins_player.append(parts[0])
+            loaded_wins_computer.append(parts[1])
 
     sum_wins_player = 0
     sum_wins_computer = 0
@@ -118,12 +142,10 @@ def main():
     for x in loaded_wins_computer:
         sum_wins_computer += int(x)
 
-    print("gesamt gewonnene Spiele vom Computer: ")
-    print(sum_wins_computer)
     print("gesamt gewonnene Spiele vom Spieler: ")
     print(sum_wins_player)
-    save_to_file(player_wins, computer_wins)
-
+    print("gesamt gewonnene Spiele vom Computer: ")
+    print(sum_wins_computer)
 
 if __name__ == "__main__":
     main()

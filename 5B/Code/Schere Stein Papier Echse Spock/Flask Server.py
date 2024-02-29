@@ -18,8 +18,8 @@ def homePage():
 
 
 # soll add und update gleichzeitig sein
-@app.route('/updateChoice', methods=['POST'])
-def update_choice():
+@app.route('/updateTotalWins', methods=['POST'])
+def update_total_wins():
     conn = get_db_connection()
     cursor = conn.cursor()
 
@@ -52,6 +52,28 @@ def update_choice():
     conn.close()
 
     return jsonify({'choice_name': choice_name, 'new_amount': amount})
+
+
+@app.route('/getTotalWins', methods=['GET'])
+def get_total_wins():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    submitted_choices = request.form.to_dict()
+    player_name = submitted_choices.get('name')
+
+    # cursor.execute('SELECT * FROM choice WHERE name = ?', (player_name,))
+    cursor.execute('SELECT name, amount FROM choice')
+    rows = cursor.fetchall()
+
+    # Umwandeln der Row-Objekte in ein dictionary, um es JSON-kompatibel zu machen
+    data = [{'name': row['name'], 'amount': row['amount']} for row in rows]
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return jsonify(data)
 
 
 if __name__ == '__main__':

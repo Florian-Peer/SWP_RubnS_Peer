@@ -1,5 +1,6 @@
 # https://bigbangtheory.fandom.com/de/wiki/Stein,_Papier,_Schere,_Echse,_Spock
 # http://www.samkass.com/theories/RPSSL.html
+import json
 from enum import Enum
 import random
 import requests
@@ -52,12 +53,12 @@ def save_to_file(data1, data2, playerChoices, computerChoices):
     playerChoicesString = ""
     computerChoicesString = ""
     for c in playerChoices:
-        if(playerChoicesString == ""):
+        if (playerChoicesString == ""):
             playerChoicesString = playerChoicesString + c
         else:
             playerChoicesString = playerChoicesString + ";" + c
     for c in computerChoices:
-        if(computerChoicesString == ""):
+        if (computerChoicesString == ""):
             computerChoicesString = computerChoicesString + c
         else:
             computerChoicesString = computerChoicesString + ";" + c
@@ -118,34 +119,41 @@ def main():
     print()
     print("aus der Textdatei geladene Statistik:")
 
-    loaded_wins_player = []
-    loaded_wins_computer = []
-    save_to_file(player_wins, computer_wins, player_choices, computer_choices)
-    with open('game_data.txt', 'r') as file:
-        # die ersten paar Zeilen sind nur zur Information → skippen
-        next(file)
-        next(file)
-        next(file)
-        next(file)
-        for line in file:
-            wins = line.strip().split('!')
-            parts = wins[0].strip().split(';')
-            loaded_wins_player.append(parts[0])
-            loaded_wins_computer.append(parts[1])
+    # Wins speichern
+    saveToDB("player", player_wins)
+    saveToDB("computer", computer_wins)
 
     sum_wins_player = 0
     sum_wins_computer = 0
 
-    for x in loaded_wins_player:
-        sum_wins_player += int(x)
-
-    for x in loaded_wins_computer:
-        sum_wins_computer += int(x)
+    dbDict = json.loads(getFromDB())
+    for user in dbDict:
+        if user['name'] == 'player':
+            sum_wins_player = user['amount']
+        elif user['name'] == 'computer':
+            sum_wins_computer = user['amount']
 
     print("gesamt gewonnene Spiele vom Spieler: ")
     print(sum_wins_player)
     print("gesamt gewonnene Spiele vom Computer: ")
     print(sum_wins_computer)
+
+
+def saveToDB(name, amount):
+    url = 'http://127.0.0.1:5000/updateTotalWins'
+    data = {
+        'name': name,
+        'amount': amount
+    }
+    response = requests.post(url, data=data)
+    print(response.text)
+
+
+def getFromDB():
+    url = 'http://127.0.0.1:5000/getTotalWins'
+    response = requests.get(url)
+    return response.text
+
 
 if __name__ == "__main__":
     main()

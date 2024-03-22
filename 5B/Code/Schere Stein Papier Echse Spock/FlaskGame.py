@@ -75,6 +75,7 @@ def main():
     print("⛄HERRZLICH WILLKOMMEN BEIM WAHNSINNS-SPIEL SCHERE STEIN PAPIER ECHSE SPOCK!!!!⛄")
     print("✁☝⛺⛽")
     print("-----------------------------------------------------------------------------")
+    print("WICHTIG!!! haben Sie den Flask Server gestartet??? -> Flask Server.py ausführen")
     print()
     while True:
         player_choice = input("Was wählst du? (schere, stein, papier, echse, spock): ").lower()
@@ -117,7 +118,7 @@ def main():
         print("-", choice)
 
     print()
-    print("aus der Textdatei geladene Statistik:")
+
 
     # Wins speichern
     saveToDB("player", player_wins)
@@ -133,6 +134,7 @@ def main():
         elif user['name'] == 'computer':
             sum_wins_computer = user['amount']
 
+    print("aus der Datenbank geladene Statistik:")
     print("gesamt gewonnene Spiele vom Spieler: ")
     print(sum_wins_player)
     print("gesamt gewonnene Spiele vom Computer: ")
